@@ -128,12 +128,12 @@ void drawFootBall(void) {
 	glColor3f(1.0, 1.0, 1.0);
 	glTranslatef(sphere.position.x, sphere.position.y, sphere.position.z);
 
-	//glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap.tga"].texID);
+	//glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap"].texID);
 	//glutSolidSphere(BALL_RADIUS, 32, 32);
 
 	GLUquadricObj *quadObj = gluNewQuadric();//创建一个二次曲面物体
 	gluQuadricTexture(quadObj, GL_TRUE);        //启用该二次曲面的纹理
-	glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap.tga"].texID);
+	glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap"].texID);
 	gluSphere(quadObj, 1, 20, 20); //画圆
 
 	glPopMatrix();
@@ -143,13 +143,13 @@ void drawFootBall(void) {
 void drawGround(void) {
 
 
-	glBindTexture(GL_TEXTURE_2D, textures["grass_diff.tga"].texID);
+	glBindTexture(GL_TEXTURE_2D, textures["grass_diff"].texID);
 	
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
-	glNormal3f(1.0f, 1.0f, 0.0f);
-	int width = 20;
+	glNormal3f(1.0f, 1.0f, 1.0f);
+	int width = 10;
 	//glColor3f(1.0, 0, 0.5);
 	glTexCoord2f(0.0f, 0.0f); 
 	glVertex3f(-width, -1.0f, -width);
@@ -161,25 +161,34 @@ void drawGround(void) {
 	glVertex3f(width, -1.0f, -width);
 	glEnd();
 
-	/*glBegin(GL_QUADS);
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	for (int z = 0; z < 20; z++) {
-		float zStart = 100.0f - z * 10.0f;
-		for (int x = 0; x < 20; x++) {
-			float xStart = x * 10.0f - 100.0f;
-			if ((z % 2) ^ (x % 2)) {
-				glColor4ub(41, 41, 41, 255);
-			}
-			else {
-				glColor4ub(200, 200, 200, 255);
-			}
-			glVertex3f(xStart, -1.0f, zStart);
-			glVertex3f(xStart + 10.0f, -1.0f, zStart);
-			glVertex3f(xStart + 10.0f, -1.0f, zStart - 10.0f);
-			glVertex3f(xStart, -1.0f, zStart - 10.0f);
-		}
-	}
-	glEnd();*/
+}
+
+void drawWalls(void) {
+
+	glPushMatrix();
+	glRotatef(90.0, 90.0, 0.0, 1.0);
+	glTranslatef(0, 0, -29);
+
+	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
+	glColor3f(1.0, 0.0, 1.0);
+
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 1.0f, 0.0f);
+	int width = 10;
+	//glColor3f(1.0, 0, 0.5);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-width, -1.0f, -width);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-width, -1.0f, width);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(width, -1.0f, width);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(width, -1.0f, -width);
+	glEnd();
+	glPopMatrix();
+
 }
 
 void display(void) {
@@ -188,7 +197,7 @@ void display(void) {
 	glLoadIdentity(); //Reset the drawing perspective
 
 	gluLookAt(sphereCamera.position.x, sphereCamera.position.y, sphereCamera.position.z,
-		sphere.position.x, sphere.position.y, sphere.position.z,
+		sphere.position.x, sphere.position.y, sphere.position.z - 10,
 		0.0, 1.0, 0.0);
 
 	/*sphereCamera.xAngle = -90.0f;
@@ -207,6 +216,11 @@ void display(void) {
 	GLfloat lightColor1[] = { 0.3f, 0.3f, 0.1f, 1.0f }; //Color (0.5, 0.5, 0.5)
 	GLfloat lightPos1[] = { -1.0f, -1.0f, -1.0f, 1.0f }; //Positioned at (4, 0, 8)
 	glLightfv(GL_LIGHT1, GL_AMBIENT, lightColor1);
+
+	//GLfloat lightColor2[] = { 0.2f, 0.2f, 0.2f, 1.0f }; //Color (0.5, 0.5, 0.5)
+	//GLfloat lightPos2[] = { 0.0f, 100.0f, 0.10f, 1.0f }; //Positioned at (4, 0, 8)
+	//glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColor2);
+	//glLightfv(GL_LIGHT2, GL_POSITION, lightPos2);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glMatrixMode(GL_MODELVIEW); //Switch to the drawing perspective
@@ -231,6 +245,8 @@ void display(void) {
 
 	drawGround();
 
+	drawWalls();
+
 	//drawTriangle();
 
 
@@ -250,12 +266,22 @@ void display(void) {
 void mGLInit(void) {
 
 	char grass_diff[] = "grass_diff.tga";
-	if (!LoadTGA(&textures["grass_diff.tga"], grass_diff))
+	if (!LoadTGA(&textures["grass_diff"], grass_diff))
 		return;
 
 	char FootballCompleteMap[] = "FootballCompleteMap.tga";
-	if (!LoadTGA(&textures["FootballCompleteMap.tga"], FootballCompleteMap))
+	if (!LoadTGA(&textures["FootballCompleteMap"], FootballCompleteMap))
 		return;
+	char fillBarHorizontal[] = "fillBarHorizontal.tga";
+	if (!LoadTGA(&textures["fillBarHorizontal"], fillBarHorizontal))
+		return;
+	/*char brick_texture_lo_res[] = "brick_texture_lo_res.tga";
+	if (!LoadTGA(&textures["brick_texture_lo_res"], brick_texture_lo_res))
+		return;*/
+	/*char brick[] = "brick.tga";
+	if (!LoadTGA(&textures["brick"], brick))
+		return;*/
+	
 
 	//glClearColor(137 / 255.0, 206 / 255.0, 255 / 255.0, 0);
 	glClearColor(0.0, 0.0, 0.0, 0.0); //背景黑色
@@ -265,7 +291,7 @@ void mGLInit(void) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_TEXTURE_2D);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glEnable(GL_LIGHTING); //Enable lighting
 
 	glEnable(GL_LIGHT0); //Enable light #0

@@ -37,16 +37,19 @@ void handleKeypress(unsigned char key, //The key that was pressed
 	switch (key) {
 		case '+':
 			sphereCamera.position.z += 1.0f;
+
 			break;
 		case '-':
 			sphereCamera.position.z -= 1.0f;
 			break;
-		case ' ':
-			sphereCamera.position.z += 1.0f;
+		case 'w':
+			sphereCamera.position.z -= 1.0f;
+			sphere.position.z -= 1.0f;
 			//exit(1);
 			break;
-		case 'z':
+		case 's':
 			sphereCamera.position.z += 1.0f;
+			sphere.position.z += 1.0f;
 			//exit(1);
 			break;
 	}
