@@ -2,9 +2,13 @@
 //#include "constants.h"
 #include "functionalities.h"
 #include<math.h>
+#include<iostream>
+using namespace std;
+
 
 axes toLookAt;
-PhysicalState sphere;
+PhysicalState sphere, sphereCamera;
+TextureImage texture[5];
 
 void rainBox(double alpha = 0.7) {
 
@@ -118,10 +122,52 @@ void drawTriangle(void) {
 void drawFootBall(void) {
 	glPushMatrix();
 	glColor3f(1.0, 1.0, 0.0);
-	//glTranslatef(sphere.position.x, sphere.position.y, sphere.position.z);
+	glTranslatef(sphere.position.x, sphere.position.y, sphere.position.z);
 	glutSolidSphere(BALL_RADIUS, 20, 20);
 	glPopMatrix();
 
+}
+
+void drawGround(void) {
+
+
+	//glBindTexture(GL_TEXTURE_2D, texture[0].texID);
+	
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_TEXTURE_2D);
+	//glBegin(GL_QUADS);
+	//glNormal3f(0.0f, 1.0f, 0.0f);
+	//int width = 10;
+	//glColor4ub(41, 41, 41, 255);
+	////glTexCoord2f(0.0f, 0.0f); 
+	//glVertex3f(-width, -1.0f, width);
+	////glTexCoord2f(1.0f, 0.0f); 
+	//glVertex3f(width, -1.0f, width);
+	////glTexCoord2f(1.0f, 1.0f); 
+	//glVertex3f(width, -1.0f, width);
+	////glTexCoord2f(0.0f, 1.0f); 
+	//glVertex3f(-width, -1.0f, width);
+	//glEnd();
+
+	glBegin(GL_QUADS);
+	glNormal3f(0.0f, 1.0f, 0.0f);
+	for (int z = 0; z < 20; z++) {
+		float zStart = 100.0f - z * 10.0f;
+		for (int x = 0; x < 20; x++) {
+			float xStart = x * 10.0f - 100.0f;
+			if ((z % 2) ^ (x % 2)) {
+				glColor4ub(41, 41, 41, 255);
+			}
+			else {
+				glColor4ub(200, 200, 200, 255);
+			}
+			glVertex3f(xStart, -1.0f, zStart);
+			glVertex3f(xStart + 10.0f, -1.0f, zStart);
+			glVertex3f(xStart + 10.0f, -1.0f, zStart - 10.0f);
+			glVertex3f(xStart, -1.0f, zStart - 10.0f);
+		}
+	}
+	glEnd();
 }
 
 void display(void) {
@@ -129,11 +175,18 @@ void display(void) {
 
 	glLoadIdentity(); //Reset the drawing perspective
 
+	gluLookAt(sphereCamera.position.x, sphereCamera.position.y, sphereCamera.position.z,
+		sphere.position.x, sphere.position.y, sphere.position.z,
+		0.0, 1.0, 0.0);
+
 	/*sphereCamera.xAngle = -90.0f;
 	sphereCamera.zAngle = 15.0f;
 	sphereCamera.distance = 5.0;
 	sphereCamera.distance = 10;*/
-	//cameraPosition(toLookAt, 20, 15.0f, -90.0f);
+	//cameraPosition(sphere.position, 60, 15.0f, -90.0f);
+
+	//gluLookAt(0, 40.0, 40.0, sphere.position.x, sphere.position.y, sphere.position.z, 0.0, 1.0, 0.0);
+	//gluLookAt(0, 40.0, 40.0, 0, 0, 0, 0.0, 1.0, 0.0);
 
 	GLfloat lightColor0[] = { 1.0f, 1.0f, 1.0f, 0.7f }; //Color (0.5, 0.5, 0.5)
 	GLfloat lightPos0[] = { 0.0f, -100.0f, 100.0f, 1.0f }; //Positioned at (4, 0, 8)
@@ -161,19 +214,35 @@ void display(void) {
 	
 
 	//drawHud();
+
 	drawFootBall();
+
+	drawGround();
+
 	//drawTriangle();
 
 
+	//glutSolidSphere(BALL_RADIUS, 20, 20);
+
+	//glutWireTeapot(2);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+
+
+
 
 	//glFlush();
 }
 
 void mGLInit(void) {
-	glClearColor(137 / 255.0, 206 / 255.0, 255 / 255.0, 0);
+
+	char grass_diff[] = "grass_diff.tga";
+	if (!LoadTGA(&texture[0], grass_diff))
+		return;
+
+	//glClearColor(137 / 255.0, 206 / 255.0, 255 / 255.0, 0);
+	glClearColor(0.0, 0.0, 0.0, 0.0); //±³¾°ºÚÉ«
 	//    glOrtho(0, WIDTH, 0, HEIGHT, 0, 500);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
@@ -195,7 +264,21 @@ void mGLInit(void) {
 
 }
 
+
+void reshape(int w, int h)
+{
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 20.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+}
+
 int main(int argc, char *argv[]) {
+
+	int width = 1280, height = 720;
 
 	mDataInit();
 
@@ -204,16 +287,22 @@ int main(int argc, char *argv[]) {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	//glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
 	//glutInitWindowPosition(300, 300);
-	glutInitWindowSize(1280, 720);
+	glutInitWindowSize(width, height);
 	//glutFullScreen();
 
 	glutCreateWindow("footballGame");
-	glutDisplayFunc(&display);
-	mGLInit();
-	glutMainLoop();
 
 	glutKeyboardFunc(handleKeypress);
 	glutKeyboardUpFunc(handleUpKeypress);
+	glutSpecialFunc(handleSpecialKeypress);
+
+	glutDisplayFunc(&display);
+	glutReshapeFunc(reshape);
+
+	mGLInit();
+
+	glutMainLoop();
+
 
 	return 0;
 }

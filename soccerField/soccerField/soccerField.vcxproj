@@ -132,10 +132,12 @@
   <ItemGroup>
     <ClCompile Include="functionalities.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="shapes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h" />
     <ClInclude Include="functionalities.h" />
+    <ClInclude Include="shapes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

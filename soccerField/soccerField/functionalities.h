@@ -21,9 +21,23 @@ struct PhysicalState {
 	//friend ostream &operator << (ostream &out, PhysicalState &p);
 }; 
 
-extern axes toLookAt;
-extern PhysicalState sphere;// *determineSphere;
 
+//纹理结构体定义
+typedef struct
+{
+	GLubyte *imageData;//图像数据
+	GLuint bpp;//像素深度
+	GLuint width;//图像宽度
+	GLuint height;//图像高度
+	GLuint texID;//对应的纹理ID
+}TextureImage;
+
+//加载TGA图像，生成纹理
+bool LoadTGA(TextureImage *texture, char *fileName);
+
+
+extern axes toLookAt;
+extern PhysicalState sphere, sphereCamera;// *determineSphere;
 
 void mDataInit();
 
@@ -34,3 +48,4 @@ void cameraPosition(axes point, double distance, double xAngle, double zAngle);
 
 void handleKeypress(unsigned char key, int x, int y);
 void handleUpKeypress(unsigned char key, int x, int y);
+void handleSpecialKeypress(int key, int x, int y);
