@@ -3,12 +3,14 @@
 #include "functionalities.h"
 #include<math.h>
 #include<iostream>
+#include<map>
+
 using namespace std;
 
 
 axes toLookAt;
 PhysicalState sphere, sphereCamera;
-TextureImage texture[5];
+map<string, TextureImage> textures;
 
 void rainBox(double alpha = 0.7) {
 
@@ -120,10 +122,20 @@ void drawTriangle(void) {
 
 
 void drawFootBall(void) {
+
+	
 	glPushMatrix();
 	glColor3f(1.0, 1.0, 0.0);
 	glTranslatef(sphere.position.x, sphere.position.y, sphere.position.z);
-	glutSolidSphere(BALL_RADIUS, 20, 20);
+
+	//glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap.tga"].texID);
+	//glutSolidSphere(BALL_RADIUS, 32, 32);
+
+	GLUquadricObj *quadObj = gluNewQuadric();//创建一个二次曲面物体
+	gluQuadricTexture(quadObj, GL_TRUE);        //启用该二次曲面的纹理
+	glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap.tga"].texID);
+	gluSphere(quadObj, 1, 20, 20); //画圆
+
 	glPopMatrix();
 
 }
@@ -131,7 +143,7 @@ void drawFootBall(void) {
 void drawGround(void) {
 
 
-	glBindTexture(GL_TEXTURE_2D, texture[0].texID);
+	glBindTexture(GL_TEXTURE_2D, textures["grass_diff.tga"].texID);
 	
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
@@ -238,7 +250,11 @@ void display(void) {
 void mGLInit(void) {
 
 	char grass_diff[] = "grass_diff.tga";
-	if (!LoadTGA(&texture[0], grass_diff))
+	if (!LoadTGA(&textures["grass_diff.tga"], grass_diff))
+		return;
+
+	char FootballCompleteMap[] = "FootballCompleteMap.tga";
+	if (!LoadTGA(&textures["FootballCompleteMap.tga"], FootballCompleteMap))
 		return;
 
 	//glClearColor(137 / 255.0, 206 / 255.0, 255 / 255.0, 0);
