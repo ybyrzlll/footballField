@@ -125,7 +125,7 @@ void drawFootBall(void) {
 
 	
 	glPushMatrix();
-	glColor3f(1.0, 1.0, 0.0);
+	glColor3f(1.0, 1.0, 1.0);
 	glTranslatef(sphere.position.x, sphere.position.y, sphere.position.z);
 
 	//glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap.tga"].texID);
