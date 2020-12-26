@@ -131,25 +131,25 @@ void drawFootBall(void) {
 void drawGround(void) {
 
 
-	//glBindTexture(GL_TEXTURE_2D, texture[0].texID);
+	glBindTexture(GL_TEXTURE_2D, texture[0].texID);
 	
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
-	//glBegin(GL_QUADS);
-	//glNormal3f(0.0f, 1.0f, 0.0f);
-	//int width = 10;
-	//glColor4ub(41, 41, 41, 255);
-	////glTexCoord2f(0.0f, 0.0f); 
-	//glVertex3f(-width, -1.0f, width);
-	////glTexCoord2f(1.0f, 0.0f); 
-	//glVertex3f(width, -1.0f, width);
-	////glTexCoord2f(1.0f, 1.0f); 
-	//glVertex3f(width, -1.0f, width);
-	////glTexCoord2f(0.0f, 1.0f); 
-	//glVertex3f(-width, -1.0f, width);
-	//glEnd();
-
 	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 1.0f, 0.0f);
+	int width = 20;
+	//glColor3f(1.0, 0, 0.5);
+	glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(-width, -1.0f, -width);
+	glTexCoord2f(0.0f, 1.0f); 
+	glVertex3f(-width, -1.0f, width);
+	glTexCoord2f(1.0f, 1.0f); 
+	glVertex3f(width, -1.0f, width);
+	glTexCoord2f(1.0f, 0.0f); 
+	glVertex3f(width, -1.0f, -width);
+	glEnd();
+
+	/*glBegin(GL_QUADS);
 	glNormal3f(0.0f, 1.0f, 0.0f);
 	for (int z = 0; z < 20; z++) {
 		float zStart = 100.0f - z * 10.0f;
@@ -167,7 +167,7 @@ void drawGround(void) {
 			glVertex3f(xStart, -1.0f, zStart - 10.0f);
 		}
 	}
-	glEnd();
+	glEnd();*/
 }
 
 void display(void) {
