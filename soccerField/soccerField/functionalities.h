@@ -29,6 +29,7 @@ struct Circle {
 	axes position;
 	double radius;
 	string color;
+	int score;
 
 
 	Circle();
@@ -52,8 +53,10 @@ bool LoadTGA(TextureImage *texture, char *fileName);
 extern axes toLookAt;
 extern PhysicalState sphere, sphereCamera;// *determineSphere;
 extern Circle circles[CIRCLE_NUM];
+extern int score;
 
 void mDataInit();
+void resetPos();
 
 void cameraPosition(axes point, double distance, double xAngle, double zAngle);
 

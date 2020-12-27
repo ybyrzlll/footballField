@@ -9,10 +9,40 @@ using namespace std;
 
 
 int SphereState;
+int score;
 axes toLookAt;
 PhysicalState sphere, sphereCamera;
 map<string, TextureImage> textures;
 Circle circles[CIRCLE_NUM];
+
+void intersectCircle(Circle &circle) {
+	bool ret = false;
+
+	double distance = sqrt(pow(sphere.position.x - circle.position.x, 2) + pow(sphere.position.y - circle.position.y, 2));
+	if (distance < circle.radius) {
+		ret = true;
+	}
+
+	if (ret) {
+		score += circle.score;
+		
+	}
+}
+
+bool intersectWall() {
+	return abs((WALL_Z - sphere.position.z)) <= BALL_RADIUS - 1.0f;
+}
+
+void intersect() {
+	if (intersectWall()) {
+		for (int i = 0; i < CIRCLE_NUM; i++) {
+			intersectCircle(circles[i]);
+		}
+		cout << score << endl;
+		resetPos();
+	}
+	
+}
 
 void rainBox(double alpha = 0.7) {
 
@@ -52,7 +82,13 @@ void drawHud(void) {
 
 	//        glDisable(GL_CULL_FACE);
 
-	rainBox();
+	glColor3f(0.0, 0.0, 1.0);
+	glBegin(GL_QUADS);
+	glVertex2f(50, 50);
+	glVertex2f(50, 100);
+	glVertex2f(100, 100);
+	glVertex2f(100, 50);
+	glEnd();
 
 
 	glEnable(GL_LIGHTING);
@@ -89,7 +125,7 @@ void drawOrigin(void) {
 }
 
 
-void drawCircle(Circle circle) {
+void drawCircle(Circle &circle) {
 	glPushMatrix();
 	glTranslatef(circle.position.x, circle.position.y, circle.position.z);
 	glRotatef(90.0, 1.0, 0.0, 0.0);
@@ -97,7 +133,7 @@ void drawCircle(Circle circle) {
 	glBindTexture(GL_TEXTURE_2D, textures[circle.color].texID);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 1.0f);
-	double width = circle.radius * 2.0f;
+	double width = circle.radius ;
 	glTexCoord2f(-1.0f, 1.0f);
 	glVertex3f(-width, -1.0f, -width);
 	glTexCoord2f(-1.0f, 0.0f);
@@ -172,7 +208,7 @@ void drawGround(void) {
 void drawWalls(void) {
 
 	glPushMatrix();
-	glTranslatef(0, 5, -20);
+	glTranslatef(0, 5, WALL_Z);
 
 	glRotatef(90.0, 90.0, 0.0, 1.0);
 
@@ -303,12 +339,9 @@ void display(void) {
 
 	drawCircles();
 
-	//drawTriangle();
+	drawHud();
 
-
-	//glutSolidSphere(BALL_RADIUS, 20, 20);
-
-	//glutWireTeapot(2);
+	intersect();
 
 	glutSwapBuffers();
 	glutPostRedisplay();

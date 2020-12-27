@@ -13,7 +13,8 @@ Circle::Circle() {
 	position = { 0.0, 0.0, 0.0 };
 }
 
-void mDataInit() {
+//sphere  Camera
+void resetPos() {
 	sphere.position = { 0.0, 0.0, 10.0 };
 	sphere.rotationx = 0;
 	sphereCamera.position = { 0.0, 6.0, 22.0 };
@@ -25,42 +26,59 @@ void mDataInit() {
 	toLookAt = sphere.position;
 
 	SphereState = 0;
+}
 
-	circles[0].position = { -12, 5, -19.9 };
-	circles[0].radius = 0.4;
+void mDataInit() {
+	score = 0;
+
+	resetPos();
+
+	circles[0].position = { -12, 7, -19.9 };
+	circles[0].radius = 0.8;
 	circles[0].color = "targetRed.tga";
+	circles[0].score = 30;
+
 
 	circles[1].position = { -9, 2, -19.9 };
-	circles[1].radius = 1.0;
+	circles[1].radius = 2.0;
 	circles[1].color = "targetGreen.tga";
+	circles[1].score = 10;
 
 	circles[2].position = { -6, 5, -19.9 };
-	circles[2].radius = 0.65;
+	circles[2].radius = 1.3;
 	circles[2].color = "targetBlue.tga";
+	circles[2].score = 20;
+
 
 	circles[3].position = { -3, 3, -19.9 };
-	circles[3].radius = 0.4;
+	circles[3].radius = 0.8f;
 	circles[3].color = "targetRed.tga";
+	circles[3].score = 30;
 
 	circles[4].position = { -2.0, 9, -19.9 };
-	circles[4].radius = 0.4;
+	circles[4].radius = 0.8f;
 	circles[4].color = "targetRed.tga";
+	circles[4].score = 30;
 
-	circles[5].position = { 0, 5.5, -19.9 };
-	circles[5].radius = 1.0;
+	circles[5].position = { 2, 5.5, -19.9 };
+	circles[5].radius = 2.0;
 	circles[5].color = "targetGreen.tga";
+	circles[5].score = 10;
 
-	circles[6].position = { 3, 2, -19.9 };
-	circles[6].radius = 0.65;
+	circles[6].position = { 5, 2, -19.9 };
+	circles[6].radius = 1.3;
 	circles[6].color = "targetBlue.tga";
+	circles[6].score = 20;
 
-	circles[7].position = { 7, 4, -19.9 };
-	circles[7].radius = 1.0;
+	circles[7].position = { 9, 4, -19.8 };
+	circles[7].radius = 2.0;
 	circles[7].color = "targetGreen.tga";
+	circles[7].score = 10;
 
 	circles[8].position = { 10, 8, -19.5 };
-	circles[8].radius = 0.4;
+	circles[8].radius = 0.8;
 	circles[8].color = "targetRed.tga";
+	circles[8].score = 30;
 
 }
 
@@ -103,8 +121,7 @@ void handleKeypress(unsigned char key, //The key that was pressed
 			SphereState = 1;
 			break;
 		case 'r':
-			SphereState = 0;
-			mDataInit();
+			resetPos();
 			break;
 	}
 

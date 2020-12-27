@@ -4,5 +4,6 @@
 #define AD_HEIGHT 1
 #define SPEED 2
 #define CIRCLE_NUM 9
+#define WALL_Z -20
 
 const double PI = 3.141592653589793238L;
