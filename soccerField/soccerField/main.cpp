@@ -171,13 +171,14 @@ void drawWalls(void) {
 	glRotatef(90.0, 90.0, 0.0, 1.0);
 
 	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
-	glColor3f(1.0, 0.0, 1.0);
+	glColor3f(1.0, 1.0, 1.0);
+	glBindTexture(GL_TEXTURE_2D, textures["old_wall_texture_TGA"].texID);
 
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 0.0f);
-	int width = 20, height = 5;
+	int width = 25, height = 5;
 	//glColor3f(1.0, 0, 0.5);
 	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-width, -1.0f, -height);
@@ -198,10 +199,6 @@ void drawWalls(void) {
 
 	glRotatef(90.0, 0, 0, 1.0);
 
-	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
-	glColor3f(1.0, 0.0, 1.0);
-
-	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 0.0f);
@@ -224,14 +221,8 @@ void drawWalls(void) {
 
 	glRotatef(90, 0, 0, 1.0);
 
-	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
-	glColor3f(1.0, 0.0, 1.0);
-
-	//glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 0.0f);
-	//glColor3f(1.0, 0, 0.5);
 	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-height, -1.0f, -width );
 	glTexCoord2f(0.0f, 1.0f);
@@ -332,7 +323,13 @@ void mGLInit(void) {
 	/*char brick_texture_lo_res[] = "brick_texture_lo_res.tga";
 	if (!LoadTGA(&textures["brick_texture_lo_res"], brick_texture_lo_res))
 		return;*/
-	/*char brick[] = "brick.tga";
+	char targetBlue[] = "targetBlue.tga";
+	if (!LoadTGA(&textures["targetBlue"], targetBlue))
+		return;
+	char old_wall_texture_TGA[] = "old_wall_texture_TGA.tga";
+	if (!LoadTGA(&textures["old_wall_texture_TGA"], old_wall_texture_TGA))
+		return;
+	/*char brick[] = "bricksimple.tga";
 	if (!LoadTGA(&textures["brick"], brick))
 		return;*/
 	
