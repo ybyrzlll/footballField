@@ -15,6 +15,8 @@ PhysicalState sphere, sphereCamera;
 map<string, TextureImage> textures;
 Circle circles[CIRCLE_NUM];
 
+axes shootAngle;
+
 void intersectCircle(Circle &circle) {
 	bool ret = false;
 
@@ -153,17 +155,22 @@ void drawCircles(void) {
 	}
 }
 
-
-
-
-void drawFootBall(void) {
-
+void footBallMove() {
 	if (SphereState == 1) {
 		sphere.position.z -= 0.01 * SPEED;
+		sphere.position.x += 0.01 * SPEED * sin(shootAngle.x / 180.0f);
+		sphere.position.y += 0.01 * SPEED * sin(shootAngle.y / 180.0f);
+
 		sphereCamera.position.z -= 0.01 * SPEED;
 
 		sphere.rotationx -= 1;
 	}
+}
+
+
+void drawFootBall(void) {
+
+	
 
 	glPushMatrix();
 	glColor3f(1.0, 1.0, 1.0);
@@ -328,6 +335,8 @@ void display(void) {
 
 	//drawHud();
 
+
+	footBallMove();
 	drawFootBall();
 
 	drawGround();

@@ -53,6 +53,7 @@ bool LoadTGA(TextureImage *texture, char *fileName);
 extern axes toLookAt;
 extern PhysicalState sphere, sphereCamera;// *determineSphere;
 extern Circle circles[CIRCLE_NUM];
+extern axes shootAngle;
 extern int score;
 
 void mDataInit();

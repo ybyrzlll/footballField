@@ -5,5 +5,12 @@
 #define SPEED 2
 #define CIRCLE_NUM 9
 #define WALL_Z -20
+#define ADJUST_PARA 5
+
+#define MAX_ANGLE_X 90
+#define MIN_ANGLE_X -90
+#define MAX_ANGLE_Y 90
+#define MIN_ANGLE_Y 0
+
 
 const double PI = 3.141592653589793238L;

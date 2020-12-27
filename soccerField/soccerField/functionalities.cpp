@@ -18,9 +18,7 @@ void resetPos() {
 	sphere.position = { 0.0, 0.0, 10.0 };
 	sphere.rotationx = 0;
 	sphereCamera.position = { 0.0, 6.0, 22.0 };
-	/*sphereCamera.position.x = 0.0;
-	sphereCamera.position.y = 2.0;
-	sphereCamera.position.z = 5.0;*/
+	shootAngle = { 0.0, 0.0, 0.0 };
 
 
 	toLookAt = sphere.position;
@@ -105,17 +103,24 @@ void handleKeypress(unsigned char key, //The key that was pressed
 			sphereCamera.position.z -= 1.0f;
 			break;
 		case 'w':
-			sphereCamera.position.z -= 1.0f;
-			sphere.position.z -= 1.0f;
-			//exit(1);
+			sphereCamera.position.y += 1.0f;
+			sphere.position.y += 1.0f;
 			break;
 		case 's':
-			sphereCamera.position.z += 1.0f;
-			sphere.position.z += 1.0f;
-			//exit(1);
+			sphereCamera.position.y -= 1.0f;
+			sphere.position.y -= 1.0f;
+			break;
+		case 'a':
+			sphereCamera.position.x -= 1.0f;
+			sphere.position.x -= 1.0f;
+			break;
+		case 'd':
+			sphereCamera.position.x += 1.0f;
+			sphere.position.x += 1.0f;
 			break;
 		case ' ':
 			SphereState = 1;
+			cout << "Angle X:" << shootAngle.x << "   Y:" << shootAngle.y << endl;
 			break;
 		case 'z':
 			SphereState = 1;
@@ -134,22 +139,26 @@ void handleSpecialKeypress(int key, int x, int y)
 	switch (key)
 	{
 		case GLUT_KEY_UP:
-			sphereCamera.position.y += 1.0f;
-			sphere.position.y += 1.0f;
+			shootAngle.y += ADJUST_PARA;
+			if (shootAngle.y > MAX_ANGLE_Y)
+				shootAngle.y = MAX_ANGLE_Y;
 			break;
 		case GLUT_KEY_DOWN:
-			sphereCamera.position.y -= 1.0f;
-			sphere.position.y -= 1.0f;
+			shootAngle.y -= ADJUST_PARA;
+			if (shootAngle.y < MIN_ANGLE_Y)
+				shootAngle.y = MIN_ANGLE_Y;
 			break;
 		case GLUT_KEY_LEFT:
-			sphereCamera.position.x -= 1.0f;
-			sphere.position.x -= 1.0f;
+			shootAngle.x -= ADJUST_PARA;
+			if (shootAngle.x < MIN_ANGLE_X)
+				shootAngle.x = MIN_ANGLE_X;
 			break;
 		case GLUT_KEY_RIGHT:
-			sphereCamera.position.x += 1.0f;
-			sphere.position.x += 1.0f;
+			shootAngle.x += ADJUST_PARA;
+			if (shootAngle.x > MAX_ANGLE_X)
+				shootAngle.x = MAX_ANGLE_X;
 			break;
-		case GLUT_KEY_END:
+		case GLUT_KEY_F4:
 
 			exit(0);
 			break;
