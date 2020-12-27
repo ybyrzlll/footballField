@@ -7,6 +7,10 @@
 
 using namespace std;
 
+// 
+//contact wechar 774565715
+//我是写手，以后可以用6成价格给你做每一单
+
 
 int SphereState;
 int score;
@@ -167,6 +171,12 @@ void footBallMove() {
 	}
 }
 
+void drawRedPoint(void) {
+	glDisable(GL_TEXTURE_2D);
+	glColor4f(255.0, 0.0, 0.0, 1);
+	glutSolidSphere(0.1f, 32, 32);
+	glEnable(GL_TEXTURE_2D);
+}
 
 void drawFootBall(void) {
 
@@ -333,8 +343,7 @@ void display(void) {
 
 	
 
-	//drawHud();
-
+	drawRedPoint();
 
 	footBallMove();
 	drawFootBall();
@@ -343,7 +352,6 @@ void display(void) {
 
 	drawWalls();
 
-	//drawCircle();
 	drawOrigin();
 
 	drawCircles();
