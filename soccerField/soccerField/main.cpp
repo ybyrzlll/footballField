@@ -141,15 +141,15 @@ void drawFootBall(void) {
 }
 
 void drawGround(void) {
-
-
+	glPushMatrix();
+	glTranslatef(0, 0, -10);
 	glBindTexture(GL_TEXTURE_2D, textures["grass_diff"].texID);
 	
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 1.0f);
-	int width = 10;
+	int width = 25;
 	//glColor3f(1.0, 0, 0.5);
 	glTexCoord2f(0.0f, 0.0f); 
 	glVertex3f(-width, -1.0f, -width);
@@ -160,14 +160,15 @@ void drawGround(void) {
 	glTexCoord2f(1.0f, 0.0f); 
 	glVertex3f(width, -1.0f, -width);
 	glEnd();
-
+	glPopMatrix();
 }
 
 void drawWalls(void) {
 
 	glPushMatrix();
+	glTranslatef(0, 5, -20);
+
 	glRotatef(90.0, 90.0, 0.0, 1.0);
-	glTranslatef(0, 0, -29);
 
 	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
 	glColor3f(1.0, 0.0, 1.0);
@@ -176,16 +177,69 @@ void drawWalls(void) {
 	//glDisable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 0.0f);
-	int width = 10;
+	int width = 20, height = 5;
 	//glColor3f(1.0, 0, 0.5);
 	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-width, -1.0f, -width);
+	glVertex3f(-width, -1.0f, -height);
 	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-width, -1.0f, width);
+	glVertex3f(-width, -1.0f, height);
 	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(width, -1.0f, width);
+	glVertex3f(width, -1.0f, height);
 	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(width, -1.0f, -width);
+	glVertex3f(width, -1.0f, -height);
+	glEnd();
+	glPopMatrix();
+
+
+	///////// left wall
+
+	glPushMatrix();
+	glTranslatef(20, 5, -10);
+
+	glRotatef(90.0, 0, 0, 1.0);
+
+	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
+	glColor3f(1.0, 0.0, 1.0);
+
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 1.0f, 0.0f);
+	//glColor3f(1.0, 0, 0.5);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-height, -1.0f, -width);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(height, -1.0f, -width);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(height, -1.0f, width);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(-height, -1.0f, width);
+	glEnd();
+	glPopMatrix();
+
+
+	///////// right wall
+	glPushMatrix();
+	glTranslatef(-20, 5, -10);
+
+	glRotatef(90, 0, 0, 1.0);
+
+	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
+	glColor3f(1.0, 0.0, 1.0);
+
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 1.0f, 0.0f);
+	//glColor3f(1.0, 0, 0.5);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-height, -1.0f, -width );
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(height , -1.0f, -width);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(height, -1.0f, width);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(-height, -1.0f, width );
 	glEnd();
 	glPopMatrix();
 
@@ -197,7 +251,7 @@ void display(void) {
 	glLoadIdentity(); //Reset the drawing perspective
 
 	gluLookAt(sphereCamera.position.x, sphereCamera.position.y, sphereCamera.position.z,
-		sphere.position.x, sphere.position.y, sphere.position.z - 10,
+		sphere.position.x, sphere.position.y, sphere.position.z - 20,
 		0.0, 1.0, 0.0);
 
 	/*sphereCamera.xAngle = -90.0f;
@@ -312,7 +366,7 @@ void reshape(int w, int h)
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 20.0);
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 2.0, 60.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);

@@ -10,8 +10,8 @@ PhysicalState::PhysicalState() {
 }
 
 void mDataInit() {
-	sphere.position.x = sphere.position.y = sphere.position.z = 0.0;
-	sphereCamera.position = { 0.0, 12.0, 8.0 };
+	sphere.position = { 0.0, 0.0, 10.0 };
+	sphereCamera.position = { 0.0, 6.0, 22.0 };
 	/*sphereCamera.position.x = 0.0;
 	sphereCamera.position.y = 2.0;
 	sphereCamera.position.z = 5.0;*/
