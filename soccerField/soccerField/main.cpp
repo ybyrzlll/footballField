@@ -36,7 +36,7 @@ void intersectCircle(Circle &circle) {
 }
 
 bool intersectWall() {
-	return abs((WALL_Z - sphere.position.z)) <= BALL_RADIUS - 1.0f;
+	return abs((WALL_Z - sphere.position.z)) <= BALL_RADIUS - 1.9f;
 }
 
 void intersect() {
@@ -295,6 +295,32 @@ void drawWalls(void) {
 
 }
 
+void setOrthographicProjection() {
+	// switch to projection mode
+	glMatrixMode(GL_PROJECTION);
+	// save the previous matrix which contains the
+	//set up for the perspective projection
+	glPushMatrix();
+	// reset matrix
+	glLoadIdentity();
+	// set a 2D orthographic projection
+	gluOrtho2D(-100.0, 100.0, -100.0, 100.0);       //glutGet(GLUT_WINDOW_WIDTH) / glutGet(GLUT_WINDOW_HEIGHT)
+	// invert the y axis, down is positive
+	glScalef(1, -1, 1);
+	// mover the origin from the bottom left corner
+	// to the upper left corner
+	glTranslatef(0, -100.0, 0);
+	//set for drawing again
+	glMatrixMode(GL_MODELVIEW);
+}
+
+//reset your project with this - it simply pops back the previous projection
+void resetPerspectiveProjection() {
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+}
+
 void display(void) {
 
 
@@ -356,13 +382,22 @@ void display(void) {
 
 	drawCircles();
 
-	drawHud();
 
 	intersect();
 
+
+	//  draw2D
+	glPushMatrix();
+	glLoadIdentity(); //need this
+	setOrthographicProjection();
+	drawHud();
+	glPopMatrix();
+	resetPerspectiveProjection();
+
+
+
 	glutSwapBuffers();
 	glutPostRedisplay();
-
 
 
 
