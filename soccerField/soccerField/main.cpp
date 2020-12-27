@@ -261,7 +261,7 @@ void drawSkyBox() {
 
 void drawHud(void) {
 	//////////////////////////
-
+	
 
 	glDisable(GL_LIGHTING);
 	glMatrixMode(GL_PROJECTION);
@@ -276,12 +276,7 @@ void drawHud(void) {
 	//        glDisable(GL_CULL_FACE);
 
 	glColor4f(1.0, 1.0, 1.0, 0.7);
-	/*glBegin(GL_QUADS);
-	glVertex2f(80, 90);
-	glVertex2f(80, 100);
-	glVertex2f(100, 100);
-	glVertex2f(100, 90);
-	glEnd();*/
+	
 
 	glRasterPos2f(80.0f, 90.0f);
 	char tempChar[100] = "score:";
@@ -289,6 +284,33 @@ void drawHud(void) {
 	string tempStr = std::to_string(score) + " ";
 	strcpy(strScores, tempStr.c_str());
 	drawString(std::strcat(tempChar, strScores));
+
+
+	glColor4f(1.0, 1.0, 1.0, 0.7);
+	glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal.tga"].texID);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2f(-100, 86);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(-100, 100);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(-74, 100);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex2f(-74, 86);
+	glEnd();
+
+	glColor4f(1.0, 1.0, 1.0, 0.7);
+	glBindTexture(GL_TEXTURE_2D, textures["fillBarVerticalR.tga"].texID);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2f(86, -100);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(86, -64);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(100, -64);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex2f(100, -100);
+	glEnd();
 
 
 	glEnable(GL_LIGHTING);
@@ -615,6 +637,9 @@ void mGLInit(void) {
 	readTextTure("targetRed.tga");
 	readTextTure("targetBlue.tga");
 	readTextTure("stormydays_large.tga");
+	readTextTure("fillBarHorizontal.tga");
+	readTextTure("fillBarVerticalR.tga");
+
 
 	// ·Å´ó
 	for (int i = 0; i < 108; i++) {
