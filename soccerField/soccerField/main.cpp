@@ -4,12 +4,38 @@
 #include<math.h>
 #include<iostream>
 #include<map>
+#include<string>
 
 using namespace std;
 
-// 
-//contact wechar 774565715
-//我是写手，以后可以用6成价格给你做每一单
+//==================================
+//contact wechat 774565715
+//我是写手，以后可以用中介7成价格给你做每单
+//==================================
+
+#include <windows.h>
+
+// ASCII字符总共只有0到127，一共128种字符
+#define MAX_CHAR        128
+
+void drawString(const char* str) {
+	static int isFirstCall = 1;
+	static GLuint lists;
+
+	if (isFirstCall) { // 如果是第一次调用，执行初始化
+						// 为每一个ASCII字符产生一个显示列表
+		isFirstCall = 0;
+
+		// 申请MAX_CHAR个连续的显示列表编号
+		lists = glGenLists(MAX_CHAR);
+
+		// 把每个字符的绘制命令都装到对应的显示列表中
+		wglUseFontBitmaps(wglGetCurrentDC(), 0, MAX_CHAR, lists);
+	}
+	// 调用每个字符对应的显示列表，绘制每个字符
+	for (; *str != ' '; ++str)
+		glCallList(lists + *str);
+}
 
 
 int SphereState;
@@ -198,27 +224,6 @@ void intersect() {
 	
 }
 
-void rainBox(double alpha = 0.7) {
-
-	glBegin(GL_QUADS);
-	glColor4f(1.0f, 0.0f, 0.0, alpha); //RED
-	glVertex2f(-10.0, -20.0);
-	glVertex2f(10.0, -20.0);
-
-	glColor4f(1.0f, 1.0f, 0.0, alpha); //YELLOW
-	glVertex2f(10.0, -10.0);
-	glVertex2f(-10.0, -10.0);
-
-	glVertex2f(-10.0, -10.0);
-	glVertex2f(10.0, -10.0);
-
-
-	glColor4f(0.0f, 1.0f, 0.0, alpha); //GREEN
-	glVertex2f(10.0, 0.0);
-	glVertex2f(-10.0, 0.0);
-	glEnd();
-}
-
 //stormydays_large.tga
 void drawSkyBox() {
 	/** 获得场景中光照状态 */
@@ -270,13 +275,20 @@ void drawHud(void) {
 
 	//        glDisable(GL_CULL_FACE);
 
-	glColor3f(0.0, 0.0, 1.0);
-	glBegin(GL_QUADS);
-	glVertex2f(50, 50);
-	glVertex2f(50, 100);
+	glColor4f(1.0, 1.0, 1.0, 0.7);
+	/*glBegin(GL_QUADS);
+	glVertex2f(80, 90);
+	glVertex2f(80, 100);
 	glVertex2f(100, 100);
-	glVertex2f(100, 50);
-	glEnd();
+	glVertex2f(100, 90);
+	glEnd();*/
+
+	glRasterPos2f(80.0f, 90.0f);
+	char tempChar[100] = "score:";
+	char strScores[50];
+	string tempStr = std::to_string(score) + " ";
+	strcpy(strScores, tempStr.c_str());
+	drawString(std::strcat(tempChar, strScores));
 
 
 	glEnable(GL_LIGHTING);
@@ -572,7 +584,7 @@ void display(void) {
 	glPushMatrix();
 	glLoadIdentity(); //need this
 	setOrthographicProjection();
-	//drawHud();
+	drawHud();
 	glPopMatrix();
 	resetPerspectiveProjection();
 
