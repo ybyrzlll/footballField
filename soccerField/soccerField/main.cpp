@@ -62,64 +62,9 @@ void drawHud(void) {
 
 	//////////////////////////
 }
+void drawCircle(void) {
 
-GLfloat xRot = 0;
-GLfloat yRot = 0;
-GLfloat zRot = 0;
-
-void drawTriangle(void) {
-
-	GLfloat x, y, z, angle, x1, y1;
-	int iPivot = 1;
-	// 保存矩阵状态并旋转
-	glPushMatrix();
-	glRotatef(xRot, 1.0f, 0.0f, 0.0f);
-	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
-	glRotatef(zRot, 0.0f, 0.0f, 1.0f);
-
-	glBegin(GL_TRIANGLE_FAN);
-	// 三角形扇的共享顶点，z轴中心点上方
-	glVertex3f(0.0f, 0.0f, 0.75);
-	for (angle = 0.0f; angle < (2.0f * PI + PI / 8.0f); angle += (PI / 8.0f)) {
-		// 计算下一个顶点的位置
-		x = 0.50f * sin(angle);
-		y = 0.50f * cos(angle);
-		if ((iPivot % 2) == 0) {
-			glColor3f(1.0f, 1.0f, 0.0f);
-		}
-		else {
-			glColor3f(0.0f, 1.0f, 1.0f);
-		}
-		// 增加基准值，下次改变颜色
-		++iPivot;
-		// 指定三角形扇的下一个顶点
-		glVertex2f(x, y);
-	}
-	glEnd();
-
-	// 绘制一个新的三角形扇，作为覆盖圆锥的底
-	glBegin(GL_TRIANGLE_FAN);
-	// 三角形扇的共享顶点，中心位于原点
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	for (angle = 0.0f; angle < (2.0f * PI + PI / 8.0f); angle += (PI / 8.0f)) {
-		// 计算下一个顶点的位置
-		x = 0.50f * sin(angle);
-		y = 0.50f * cos(angle);
-		if ((iPivot % 2) == 0) {
-			glColor3f(0.5f, 0.0f, 0.5f);
-		}
-		else {
-			glColor3f(1.0f, 0.0f, 1.0f);
-		}
-		// 增加基准值，下次改变颜色
-		++iPivot;
-		// 指定三角形扇的下一个顶点
-		glVertex2f(x, y);
-	}
-	glEnd();
-	glPopMatrix();
 }
-
 
 void drawFootBall(void) {
 
@@ -133,7 +78,7 @@ void drawFootBall(void) {
 
 	GLUquadricObj *quadObj = gluNewQuadric();//创建一个二次曲面物体
 	gluQuadricTexture(quadObj, GL_TRUE);        //启用该二次曲面的纹理
-	glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap"].texID);
+	glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap.tga"].texID);
 	gluSphere(quadObj, 1, 20, 20); //画圆
 
 	glPopMatrix();
@@ -143,7 +88,7 @@ void drawFootBall(void) {
 void drawGround(void) {
 	glPushMatrix();
 	glTranslatef(0, 0, -10);
-	glBindTexture(GL_TEXTURE_2D, textures["grass_diff"].texID);
+	glBindTexture(GL_TEXTURE_2D, textures["grass_diff.tga"].texID);
 	
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
@@ -172,7 +117,7 @@ void drawWalls(void) {
 
 	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
 	glColor3f(1.0, 1.0, 1.0);
-	glBindTexture(GL_TEXTURE_2D, textures["old_wall_texture_TGA"].texID);
+	glBindTexture(GL_TEXTURE_2D, textures["old_wall_texture_TGA.tga"].texID);
 
 	//glEnable(GL_DEPTH_TEST);
 	//glDisable(GL_TEXTURE_2D);
@@ -308,30 +253,23 @@ void display(void) {
 	//glFlush();
 }
 
+void readTextTure(const char * name) {
+	char preIndex[100] = "texture/";
+	if (!LoadTGA(&textures[name], std::strcat(preIndex, name)))
+		return;
+}
+
 void mGLInit(void) {
+	//char grass_diff[] = "grass_diff.tga";
+	readTextTure("grass_diff.tga");
+	readTextTure("FootballCompleteMap.tga");
+	readTextTure("fillBarHorizontal.tga");
+	readTextTure("old_wall_texture_TGA.tga");
+	readTextTure("targetDull.tga");
+	readTextTure("targetGreen.tga");
+	readTextTure("targetRed.tga");
 
-	char grass_diff[] = "grass_diff.tga";
-	if (!LoadTGA(&textures["grass_diff"], grass_diff))
-		return;
 
-	char FootballCompleteMap[] = "FootballCompleteMap.tga";
-	if (!LoadTGA(&textures["FootballCompleteMap"], FootballCompleteMap))
-		return;
-	char fillBarHorizontal[] = "fillBarHorizontal.tga";
-	if (!LoadTGA(&textures["fillBarHorizontal"], fillBarHorizontal))
-		return;
-	/*char brick_texture_lo_res[] = "brick_texture_lo_res.tga";
-	if (!LoadTGA(&textures["brick_texture_lo_res"], brick_texture_lo_res))
-		return;*/
-	char targetBlue[] = "targetBlue.tga";
-	if (!LoadTGA(&textures["targetBlue"], targetBlue))
-		return;
-	char old_wall_texture_TGA[] = "old_wall_texture_TGA.tga";
-	if (!LoadTGA(&textures["old_wall_texture_TGA"], old_wall_texture_TGA))
-		return;
-	/*char brick[] = "bricksimple.tga";
-	if (!LoadTGA(&textures["brick"], brick))
-		return;*/
 	
 
 	//glClearColor(137 / 255.0, 206 / 255.0, 255 / 255.0, 0);
