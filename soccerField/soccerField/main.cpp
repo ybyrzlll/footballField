@@ -1,5 +1,5 @@
 #include <../glut/glut.h>
-//#include "constants.h"
+#include "constants.h"
 #include "functionalities.h"
 #include<math.h>
 #include<iostream>
@@ -12,6 +12,7 @@ int SphereState;
 axes toLookAt;
 PhysicalState sphere, sphereCamera;
 map<string, TextureImage> textures;
+Circle circles[CIRCLE_NUM];
 
 void rainBox(double alpha = 0.7) {
 
@@ -64,7 +65,7 @@ void drawHud(void) {
 	//////////////////////////
 }
 
-void drawCircle(void) {
+void drawOrigin(void) {
 	glPushMatrix();
 	glTranslatef(0, 0.1, 10);
 	glBindTexture(GL_TEXTURE_2D, textures["targetDull.tga"].texID);
@@ -87,35 +88,43 @@ void drawCircle(void) {
 	glPopMatrix();
 }
 
-void drawCircles(void) {
-	glPushMatrix();
-	glTranslatef(0, 5, -19);
-	glRotatef(90.0, -90.0, 0.0, 1.0);
-	glBindTexture(GL_TEXTURE_2D, textures["targetBlue.tga"].texID);
 
-	//glEnable(GL_DEPTH_TEST);
-	//glDisable(GL_TEXTURE_2D);
+void drawCircle(Circle circle) {
+	glPushMatrix();
+	glTranslatef(circle.position.x, circle.position.y, circle.position.z);
+	glRotatef(90.0, 1.0, 0.0, 0.0);
+	//glRotatef(180.0, 00.0, 0.0, 1.0);
+	glBindTexture(GL_TEXTURE_2D, textures[circle.color].texID);
 	glBegin(GL_QUADS);
 	glNormal3f(1.0f, 1.0f, 1.0f);
-	int width = 1.5;
-	//glColor3f(1.0, 0, 0.5);
-	glTexCoord2f(0.0f, 0.0f);
+	double width = circle.radius * 2.0f;
+	glTexCoord2f(-1.0f, 1.0f);
 	glVertex3f(-width, -1.0f, -width);
-	glTexCoord2f(0.0f, 1.0f);
+	glTexCoord2f(-1.0f, 0.0f);
 	glVertex3f(-width, -1.0f, width);
-	glTexCoord2f(1.0f, 1.0f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(width, -1.0f, width);
-	glTexCoord2f(1.0f, 0.0f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(width, -1.0f, -width);
 	glEnd();
 	glPopMatrix();
 }
 
+void drawCircles(void) {
+
+	for (int i = 0; i < CIRCLE_NUM; i++) {
+		drawCircle(circles[i]);
+	}
+}
+
+
+
+
 void drawFootBall(void) {
 
 	if (SphereState == 1) {
-		sphere.position.z -= 0.01;
-		sphereCamera.position.z -= 0.01;
+		sphere.position.z -= 0.01 * SPEED;
+		sphereCamera.position.z -= 0.01 * SPEED;
 
 		sphere.rotationx -= 1;
 	}
@@ -289,7 +298,8 @@ void display(void) {
 
 	drawWalls();
 
-	drawCircle();
+	//drawCircle();
+	drawOrigin();
 
 	drawCircles();
 

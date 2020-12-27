@@ -9,6 +9,10 @@ PhysicalState::PhysicalState() {
 	position =  { 0.0, 0.0, 0.0 };
 }
 
+Circle::Circle() {
+	position = { 0.0, 0.0, 0.0 };
+}
+
 void mDataInit() {
 	sphere.position = { 0.0, 0.0, 10.0 };
 	sphere.rotationx = 0;
@@ -21,6 +25,43 @@ void mDataInit() {
 	toLookAt = sphere.position;
 
 	SphereState = 0;
+
+	circles[0].position = { -12, 5, -19.9 };
+	circles[0].radius = 0.4;
+	circles[0].color = "targetRed.tga";
+
+	circles[1].position = { -9, 2, -19.9 };
+	circles[1].radius = 1.0;
+	circles[1].color = "targetGreen.tga";
+
+	circles[2].position = { -6, 5, -19.9 };
+	circles[2].radius = 0.65;
+	circles[2].color = "targetBlue.tga";
+
+	circles[3].position = { -3, 3, -19.9 };
+	circles[3].radius = 0.4;
+	circles[3].color = "targetRed.tga";
+
+	circles[4].position = { -2.0, 9, -19.9 };
+	circles[4].radius = 0.4;
+	circles[4].color = "targetRed.tga";
+
+	circles[5].position = { 0, 5.5, -19.9 };
+	circles[5].radius = 1.0;
+	circles[5].color = "targetGreen.tga";
+
+	circles[6].position = { 3, 2, -19.9 };
+	circles[6].radius = 0.65;
+	circles[6].color = "targetBlue.tga";
+
+	circles[7].position = { 7, 4, -19.9 };
+	circles[7].radius = 1.0;
+	circles[7].color = "targetGreen.tga";
+
+	circles[8].position = { 10, 8, -19.5 };
+	circles[8].radius = 0.4;
+	circles[8].color = "targetRed.tga";
+
 }
 
 void cameraPosition(axes point, double distance, double zAngle, double xAngle) {
@@ -56,6 +97,9 @@ void handleKeypress(unsigned char key, //The key that was pressed
 			//exit(1);
 			break;
 		case ' ':
+			SphereState = 1;
+			break;
+		case 'z':
 			SphereState = 1;
 			break;
 		case 'r':

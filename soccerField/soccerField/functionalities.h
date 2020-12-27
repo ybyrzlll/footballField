@@ -1,8 +1,9 @@
 
 //#include <GL/glut.h>
 #include <../glut/glut.h>
-//#include<iostream>
+#include<iostream>
 #include "constants.h"
+using namespace std;
 
 #define DEG2GRAD(x) ((x) * PI/180.0)
 
@@ -24,6 +25,15 @@ struct PhysicalState {
 	//friend ostream &operator << (ostream &out, PhysicalState &p);
 }; 
 
+struct Circle {
+	axes position;
+	double radius;
+	string color;
+
+
+	Circle();
+	//friend ostream &operator << (ostream &out, PhysicalState &p);
+};
 
 //纹理结构体定义
 typedef struct
@@ -41,6 +51,7 @@ bool LoadTGA(TextureImage *texture, char *fileName);
 
 extern axes toLookAt;
 extern PhysicalState sphere, sphereCamera;// *determineSphere;
+extern Circle circles[CIRCLE_NUM];
 
 void mDataInit();
 
