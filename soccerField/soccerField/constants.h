@@ -11,6 +11,6 @@
 #define MIN_ANGLE_X -90
 #define MAX_ANGLE_Y 90
 #define MIN_ANGLE_Y 0
-
+#define SKYBOX_SCALE 100.0f
 
 const double PI = 3.141592653589793238L;

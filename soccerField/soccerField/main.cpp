@@ -18,8 +18,156 @@ axes toLookAt;
 PhysicalState sphere, sphereCamera;
 map<string, TextureImage> textures;
 Circle circles[CIRCLE_NUM];
-
 axes shootAngle;
+
+// here we declare an array of vertices for the cube
+GLfloat cubeVertexData[108] =
+{
+	//object vertex coordinates for cube made from triangles
+	// Data layout for each line below is:
+	// positionX, positionY, positionZ
+	//wind counter-clockwise
+
+	0.5f, -0.5f, -0.5f,
+	0.5f, 0.5f, -0.5f,
+	0.5f, -0.5f, 0.5f,
+	0.5f, -0.5f, 0.5f,
+	0.5f, 0.5f, -0.5f,
+	0.5f, 0.5f, 0.5f,
+
+	0.5f, 0.5f, -0.5f,
+	-0.5f, 0.5f, -0.5f,
+	0.5f, 0.5f, 0.5f,
+	0.5f, 0.5f, 0.5f,
+	-0.5f, 0.5f, -0.5f,
+	-0.5f, 0.5f, 0.5f,
+
+	-0.5f, 0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, 0.5f, 0.5f,
+	-0.5f, 0.5f, 0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, 0.5f,
+	//4
+	-0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, 0.5f,
+	-0.5f, -0.5f, 0.5f,
+	0.5f, -0.5f, -0.5f,
+	0.5f, -0.5f, 0.5f,
+	//5
+	0.5f, 0.5f, 0.5f,
+	-0.5f, 0.5f, 0.5f,
+	0.5f, -0.5f, 0.5f,
+	0.5f, -0.5f, 0.5f,
+	-0.5f, 0.5f, 0.5f,
+	-0.5f, -0.5f, 0.5f,
+	//6
+	0.5f, -0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	0.5f, 0.5f, -0.5f,
+	0.5f, 0.5f, -0.5f,
+	-0.5f, -0.5f, -0.5f,
+	-0.5f, 0.5f, -0.5f
+
+};
+
+//the texture coordinates - work will skybox texture of this shape +--
+
+GLfloat textureCoordsSkyBox[72] = {
+	//face 1
+	0.75,0.33,      //    0,1,
+	0.75,0.67,     //    1,1,
+	0.5,0.33,     //    0,0,
+	0.5,0.33,     //    0,0,
+	0.75,0.67,    //    1,0,
+	0.5,0.67,   //    1,1,
+
+	//face 2
+	0.5,1.0, //    1,1,
+	0.25,1, //    0,1,
+	0.5,0.67, //    1,0,
+	0.5,0.67, //    1,0,
+	0.25,1.0, //    0,1,
+	0.25,0.67, //    1,1,
+	//face 3
+	0,0.67,//    1,1,
+	0,0.33,//    0,1,
+	0.25,0.67,//    1,0,
+	0.25,0.67,//    1,0,
+	0,0.33,//    0,1,
+	0.25,0.33,//    0,0,
+	//face 4
+	0.25,0.0,//    0,1,
+	0.5,0.0,//    1,1,
+	0.25,0.33,//    0,0,
+	0.25,0.33,//    0,0,
+	0.5,0.0,//    1,1,
+	0.5,0.33,//    0,0,
+	//face 5
+	0.5,0.67,//    1,0,
+	0.25,0.67,//    0,0,
+	0.5,0.33,//    1,1,
+	0.5,0.33,//    1,1,
+	0.25,0.67,//    0,0,
+	0.25,0.33,//    0,1,
+	//face 6
+	0.75,0.33,//    1,1,
+	1.0,0.33,//    0,1,
+	0.75,0.67,//    1,0,
+	0.75,0.67,//    1,0,
+	1.0,0.33,//    0,1,
+	1.0,0.67//    0,0
+
+
+};
+
+//the lighting normals - all facing out from each face
+GLfloat gCubeVertexdataNormals[108] =
+{
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+	1.0f, 0.0f, 0.0f,
+
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+	0.0f, 1.0f, 0.0f,
+
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0f,
+
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+	0.0f, -1.0f, 0.0f,
+
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+	0.0f, 0.0f, 1.0f,
+
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f,
+	0.0f, 0.0f, -1.0f
+
+};
 
 void intersectCircle(Circle &circle) {
 	bool ret = false;
@@ -69,6 +217,40 @@ void rainBox(double alpha = 0.7) {
 	glVertex2f(10.0, 0.0);
 	glVertex2f(-10.0, 0.0);
 	glEnd();
+}
+
+//stormydays_large.tga
+void drawSkyBox() {
+	/** 获得场景中光照状态 */
+	GLboolean lp;
+	glGetBooleanv(GL_LIGHTING, &lp);
+
+	glPushMatrix();
+	glTranslatef(0.0,  20.0f, 0.0);//SKYBOX_SCALE/2.0f
+	//glRotatef(90.0, 1.0, 0.0, 0.0);
+
+	glFrontFace(GL_CW); //texture the inside
+
+	//bind your texture here
+	glBindTexture(GL_TEXTURE_2D, textures["stormydays_large.tga"].texID);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glNormalPointer(GL_FLOAT, 0, gCubeVertexdataNormals);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, cubeVertexData);
+	//   glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+	glTexCoordPointer(2, GL_FLOAT, 0, textureCoordsSkyBox);
+	// draw a cube - type - start number - number of vertices to draw (so 3 for single triangle)
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	// deactivate vertex arrays after drawing
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	if (lp)                         /** 恢复光照状态 */
+		glEnable(GL_LIGHTING);
+	glPopMatrix();
 }
 
 
@@ -229,7 +411,6 @@ void drawWalls(void) {
 
 	glRotatef(90.0, 90.0, 0.0, 1.0);
 
-	//glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal"].texID);
 	glColor3f(1.0, 1.0, 1.0);
 	glBindTexture(GL_TEXTURE_2D, textures["old_wall_texture_TGA.tga"].texID);
 
@@ -382,6 +563,7 @@ void display(void) {
 
 	drawCircles();
 
+	drawSkyBox();
 
 	intersect();
 
@@ -390,7 +572,7 @@ void display(void) {
 	glPushMatrix();
 	glLoadIdentity(); //need this
 	setOrthographicProjection();
-	drawHud();
+	//drawHud();
 	glPopMatrix();
 	resetPerspectiveProjection();
 
@@ -420,10 +602,12 @@ void mGLInit(void) {
 	readTextTure("targetGreen.tga");
 	readTextTure("targetRed.tga");
 	readTextTure("targetBlue.tga");
+	readTextTure("stormydays_large.tga");
 
-
-
-	
+	// 放大
+	for (int i = 0; i < 108; i++) {
+		cubeVertexData[i] *= SKYBOX_SCALE;
+	}
 
 	//glClearColor(137 / 255.0, 206 / 255.0, 255 / 255.0, 0);
 	glClearColor(0.0, 0.0, 0.0, 0.0); //背景黑色
@@ -446,6 +630,7 @@ void mGLInit(void) {
 	glutSetCursor(GLUT_CURSOR_NONE);
 	//glEnable(GL_MULTISAMPLE);
 
+
 }
 
 
@@ -454,7 +639,7 @@ void reshape(int w, int h)
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 2.0, 60.0);
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 2.0, 120.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);

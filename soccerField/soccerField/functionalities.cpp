@@ -95,12 +95,13 @@ void handleKeypress(unsigned char key, //The key that was pressed
 	int x, int y) {    //The current mouse coordinates
 
 	switch (key) {
-		case '+':
+		case 'o':
 			sphereCamera.position.z += 1.0f;
-
+			sphere.position.z += 1.0f;
 			break;
-		case '-':
+		case 'p':
 			sphereCamera.position.z -= 1.0f;
+			sphere.position.z -= 1.0f;
 			break;
 		case 'w':
 			sphereCamera.position.y += 1.0f;
