@@ -8,6 +8,8 @@
 
 #define GRAD2DEG(x) ((x) * 180.0/PI)
 
+extern int SphereState;
+
 struct axes {
 	double x, y, z;
 
@@ -16,6 +18,7 @@ struct axes {
 
 struct PhysicalState {
 	axes position;
+	double rotationx;
 
 	PhysicalState();
 	//friend ostream &operator << (ostream &out, PhysicalState &p);

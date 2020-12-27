@@ -21,18 +21,12 @@
     <ClCompile Include="functionalities.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="shapes.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="functionalities.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="shapes.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

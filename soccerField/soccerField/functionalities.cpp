@@ -11,6 +11,7 @@ PhysicalState::PhysicalState() {
 
 void mDataInit() {
 	sphere.position = { 0.0, 0.0, 10.0 };
+	sphere.rotationx = 0;
 	sphereCamera.position = { 0.0, 6.0, 22.0 };
 	/*sphereCamera.position.x = 0.0;
 	sphereCamera.position.y = 2.0;
@@ -18,6 +19,8 @@ void mDataInit() {
 
 
 	toLookAt = sphere.position;
+
+	SphereState = 0;
 }
 
 void cameraPosition(axes point, double distance, double zAngle, double xAngle) {
@@ -52,6 +55,13 @@ void handleKeypress(unsigned char key, //The key that was pressed
 			sphere.position.z += 1.0f;
 			//exit(1);
 			break;
+		case ' ':
+			SphereState = 1;
+			break;
+		case 'r':
+			SphereState = 0;
+			mDataInit();
+			break;
 	}
 
 	glutPostRedisplay();
@@ -77,6 +87,10 @@ void handleSpecialKeypress(int key, int x, int y)
 		case GLUT_KEY_RIGHT:
 			sphereCamera.position.x += 1.0f;
 			sphere.position.x += 1.0f;
+			break;
+		case GLUT_KEY_END:
+
+			exit(0);
 			break;
 		default:
 			break;

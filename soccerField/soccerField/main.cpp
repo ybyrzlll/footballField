@@ -8,6 +8,7 @@
 using namespace std;
 
 
+int SphereState;
 axes toLookAt;
 PhysicalState sphere, sphereCamera;
 map<string, TextureImage> textures;
@@ -62,6 +63,7 @@ void drawHud(void) {
 
 	//////////////////////////
 }
+
 void drawCircle(void) {
 	glPushMatrix();
 	glTranslatef(0, 0.1, 10);
@@ -85,12 +87,43 @@ void drawCircle(void) {
 	glPopMatrix();
 }
 
+void drawCircles(void) {
+	glPushMatrix();
+	glTranslatef(0, 5, -19);
+	glRotatef(90.0, -90.0, 0.0, 1.0);
+	glBindTexture(GL_TEXTURE_2D, textures["targetBlue.tga"].texID);
+
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 1.0f, 1.0f);
+	int width = 1.5;
+	//glColor3f(1.0, 0, 0.5);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-width, -1.0f, -width);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-width, -1.0f, width);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(width, -1.0f, width);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(width, -1.0f, -width);
+	glEnd();
+	glPopMatrix();
+}
+
 void drawFootBall(void) {
 
-	
+	if (SphereState == 1) {
+		sphere.position.z -= 0.01;
+		sphereCamera.position.z -= 0.01;
+
+		sphere.rotationx -= 1;
+	}
+
 	glPushMatrix();
 	glColor3f(1.0, 1.0, 1.0);
 	glTranslatef(sphere.position.x, sphere.position.y, sphere.position.z);
+	glRotatef(sphere.rotationx, 1, 0, 0);
 
 	//glBindTexture(GL_TEXTURE_2D, textures["FootballCompleteMap"].texID);
 	//glutSolidSphere(BALL_RADIUS, 32, 32);
@@ -258,6 +291,8 @@ void display(void) {
 
 	drawCircle();
 
+	drawCircles();
+
 	//drawTriangle();
 
 
@@ -289,6 +324,8 @@ void mGLInit(void) {
 	readTextTure("targetDull.tga");
 	readTextTure("targetGreen.tga");
 	readTextTure("targetRed.tga");
+	readTextTure("targetBlue.tga");
+
 
 
 	
