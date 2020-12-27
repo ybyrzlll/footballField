@@ -285,8 +285,29 @@ void drawHud(void) {
 	strcpy(strScores, tempStr.c_str());
 	drawString(std::strcat(tempChar, strScores));
 
+	// progress
+	glDisable(GL_TEXTURE_2D);
+	glColor4f(1.0, 1.0, 0.0, 0.7);
+	glBegin(GL_QUADS);
+	double newX = -100 + ((shootAngle.x + 90.0f) / 180.0f) * 24.0f;
+	glVertex2f(newX, 86);
+	glVertex2f(newX, 100);
+	glVertex2f(newX + 5.0f, 100);
+	glVertex2f(newX + 5.0f, 86);
+	glEnd();
 
-	glColor4f(1.0, 1.0, 1.0, 0.7);
+	glColor4f(0.0, 1.0, 0.0, 0.7);
+	glBegin(GL_QUADS);
+	double newY = -100 + (shootAngle.y / 90.0f)*36.0f;
+	glVertex2f(100, newY);
+	glVertex2f(100, newY + 5.0f);
+	glVertex2f(85, newY + 5.0f);
+	glVertex2f(85, newY);
+	glEnd();
+
+	glEnable(GL_TEXTURE_2D);
+
+	glColor4f(1.0, 1.0, 1.0, 0.5);
 	glBindTexture(GL_TEXTURE_2D, textures["fillBarHorizontal.tga"].texID);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 0.0f);
@@ -311,6 +332,10 @@ void drawHud(void) {
 	glTexCoord2f(1.0f, 0.0f);
 	glVertex2f(100, -100);
 	glEnd();
+
+
+	
+
 
 
 	glEnable(GL_LIGHTING);
