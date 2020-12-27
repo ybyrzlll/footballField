@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define BALL_RADIUS 2
 #define AD_HEIGHT 1
-#define SPEED 3
+#define SPEED 5
 #define CIRCLE_NUM 9
 #define WALL_Z -20
 #define ADJUST_PARA 5
