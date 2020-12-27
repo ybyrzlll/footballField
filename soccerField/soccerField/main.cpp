@@ -63,7 +63,26 @@ void drawHud(void) {
 	//////////////////////////
 }
 void drawCircle(void) {
+	glPushMatrix();
+	glTranslatef(0, 0.1, 10);
+	glBindTexture(GL_TEXTURE_2D, textures["targetDull.tga"].texID);
 
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glNormal3f(1.0f, 1.0f, 1.0f);
+	int width = 1.5;
+	//glColor3f(1.0, 0, 0.5);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(-width, -1.0f, -width);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(-width, -1.0f, width);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(width, -1.0f, width);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(width, -1.0f, -width);
+	glEnd();
+	glPopMatrix();
 }
 
 void drawFootBall(void) {
@@ -236,6 +255,8 @@ void display(void) {
 	drawGround();
 
 	drawWalls();
+
+	drawCircle();
 
 	//drawTriangle();
 
